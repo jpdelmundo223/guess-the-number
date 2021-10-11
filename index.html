@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Guess the Number</title>
+  </head>
+  <body style="text-align: center; font-family: 'Calibri'">
+    <h1>Guess the Number</h1>
+    <h4>Guess a number from 1 - 10</h4>
+    <p>Enter your answer, and click submit. You have 10 tries.</p>
+    <div>
+      <input
+        type="text"
+        class="guessInput"
+        id="guessInput"
+        value=""
+        placeholder="Enter a number"
+        style="margin-bottom: 10px"
+      />
+      <input
+        type="submit"
+        class="guessSubmit"
+        id="guessSubmit"
+        value="Submit"
+      />
+      <div class="guessList" id="guessList"></div>
+      <br />
+      <div class="guessRemaining" id="guessRemaining"></div>
+      <br />
+      <div class="guessMessage" id="guessMessage"></div>
+      <br />
+      <input
+        type="submit"
+        class="guessRetry"
+        id="guessRetry"
+        value="Again"
+        style="visibility: hidden"
+      />
+    </div>
+  </body>
+  <script>
+    const randomNumber = Math.floor(Math.random() * 10);
+    console.log(randomNumber);
+
+    const guessInput = document.querySelector(".guessInput");
+    const guessList = document.querySelector(".guessList");
+    const guessMessage = document.querySelector(".guessMessage");
+    const guessRemaining = document.querySelector(".guessRemaining");
+
+    const guessSubmit = document.querySelector(".guessSubmit");
+    const guessRetry = document.querySelector(".guessRetry");
+
+    let list = new Array();
+    let countRemaining = 10;
+
+    guessSubmit.addEventListener("click", populateGuess);
+    guessRetry.addEventListener("click", resetGame);
+
+    function populateGuess() {
+      if (guessInput.value == "") {
+        alert("Field cannot be empty!");
+      } else if (guessInput.value != randomNumber.toString()) {
+        countRemaining--;
+        list.push(guessInput.value);
+        guessList.innerHTML = `You're guesses: ${list.toString()}`;
+        guessRemaining.innerHTML = `Remaining tries: ${countRemaining.toString()}`;
+        if (list.length === 10) {
+          guessMessage.textContent = "Game over!";
+          guessSubmit.style.visibility = "hidden";
+          guessRetry.style.visibility = "visible";
+        }
+      } else {
+        guessMessage.textContent = "You've won! Well done!";
+        guessSubmit.style.visibility = "hidden";
+        guessRetry.style.visibility = "visible";
+      }
+      guessInput.value = "";
+      guessInput.focus();
+    }
+
+    function resetGame() {
+      guessInput.value = "";
+      guessMessage.innerHTML = "";
+      guessList.innerHTML = "";
+      guessRemaining.innerHTML = "";
+      guessRetry.style.visibility = "hidden";
+      guessSubmit.style.visibility = "visible";
+      countRemaining = 10;
+      list = [];
+    }
+  </script>
+</html>
